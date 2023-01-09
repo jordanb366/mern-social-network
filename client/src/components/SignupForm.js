@@ -8,7 +8,7 @@ const SignupForm = () => {
   const [userFormData, setUserFormData] = useState({
     username: "",
     email: "",
-    password: "",
+    // password: "",
   });
 
   // set state for form validation
@@ -45,7 +45,7 @@ const SignupForm = () => {
     setUserFormData({
       username: "",
       email: "",
-      password: "",
+      // password: "",
     });
   };
 
