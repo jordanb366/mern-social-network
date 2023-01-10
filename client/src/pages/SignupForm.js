@@ -53,51 +53,48 @@ const SignupForm = () => {
   return (
     <div>
       {/* This is needed for the validation functionality above */}
-      {data ? (
-        <p>Success!</p>
-      ) : (
-        <Form onSubmit={handleFormSubmit}>
-          {/* show alert if server response is bad */}
-          <Alert
-            dismissible
-            onClose={() => setShowAlert(false)}
-            show={showAlert}
-            variant="danger"
-          >
-            Something went wrong with your signup!
-          </Alert>
+      <Form onSubmit={handleFormSubmit}>
+        {/* show alert if server response is bad */}
+        <Alert
+          dismissible
+          onClose={() => setShowAlert(false)}
+          show={showAlert}
+          variant="danger"
+        >
+          Something went wrong with your signup!
+        </Alert>
 
-          <Form.Group>
-            <Form.Label htmlFor="username">Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Your username"
-              name="username"
-              onChange={handleInputChange}
-              value={userFormData.username}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Username is required!
-            </Form.Control.Feedback>
-          </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="username">Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your username"
+            name="username"
+            onChange={handleInputChange}
+            value={userFormData.username}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Username is required!
+          </Form.Control.Feedback>
+        </Form.Group>
 
-          <Form.Group>
-            <Form.Label htmlFor="email">Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Your email address"
-              name="email"
-              onChange={handleInputChange}
-              value={userFormData.email}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Email is required!
-            </Form.Control.Feedback>
-          </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="email">Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Your email address"
+            name="email"
+            onChange={handleInputChange}
+            value={userFormData.email}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Email is required!
+          </Form.Control.Feedback>
+        </Form.Group>
 
-          {/* <Form.Group>
+        {/* <Form.Group>
             <Form.Label htmlFor="password">Password</Form.Label>
             <Form.Control
               type="password"
@@ -111,23 +108,19 @@ const SignupForm = () => {
               Password is required!
             </Form.Control.Feedback>
           </Form.Group> */}
-          <Button
-            disabled={
-              !(
-                (userFormData.username && userFormData.email)
-                // userFormData.password
-              )
-            }
-            type="submit"
-            variant="success"
-          >
-            Submit
-          </Button>
-        </Form>
-      )}
-      {error && (
-        <div className="my-3 p-3 bg-danger text-white">{error.message}</div>
-      )}
+        <Button
+          disabled={
+            !(
+              (userFormData.username && userFormData.email)
+              // userFormData.password
+            )
+          }
+          type="submit"
+          variant="success"
+        >
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 };
