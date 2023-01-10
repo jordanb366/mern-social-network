@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 // import { Link } from "react-router-dom";
+import { createUser } from "../utils/API";
 import Auth from "../utils/auth";
 
 const SignupForm = () => {
@@ -12,7 +13,7 @@ const SignupForm = () => {
   });
 
   // set state for form validation
-  // const [validated] = useState(false);
+  const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
@@ -32,11 +33,11 @@ const SignupForm = () => {
     }
 
     try {
-      const { data } = await addUser({
-        variables: { ...userFormData },
-      });
-
-      Auth.login(data.addUser.token);
+      const response = await createUser(userFormData);
+      if (!response.ok) {
+        throw new Error("something went wrong!");
+      }
+      // Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -96,7 +97,7 @@ const SignupForm = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group>
+          {/* <Form.Group>
             <Form.Label htmlFor="password">Password</Form.Label>
             <Form.Control
               type="password"
@@ -109,13 +110,12 @@ const SignupForm = () => {
             <Form.Control.Feedback type="invalid">
               Password is required!
             </Form.Control.Feedback>
-          </Form.Group>
+          </Form.Group> */}
           <Button
             disabled={
               !(
-                userFormData.username &&
-                userFormData.email &&
-                userFormData.password
+                (userFormData.username && userFormData.email)
+                // userFormData.password
               )
             }
             type="submit"
