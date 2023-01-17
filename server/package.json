@@ -2,10 +2,11 @@
   "name": "social-network-api-nosql",
   "version": "1.0.1",
   "description": "NoSQL API backend for Social Network",
-  "main": "index.js",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
     "start": "node server.js",
+    "watch": "nodemon",
     "dev": "nodemon server.js",
     "seed": "node utils/seed",
     "heroku-postbuild": "node utils/seed.js"
