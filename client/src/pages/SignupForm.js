@@ -37,16 +37,17 @@ const SignupForm = () => {
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
-      // Auth.login(data.addUser.token);
+      const { token, user } = await response.json();
+      console.log(user);
+      Auth.login(token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
     setUserFormData({
       username: "",
       email: "",
-      // password: "",
+      password: "",
     });
   };
 
@@ -94,25 +95,26 @@ const SignupForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        {/* <Form.Group>
-            <Form.Label htmlFor="password">Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Your password"
-              name="password"
-              onChange={handleInputChange}
-              value={userFormData.password}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Password is required!
-            </Form.Control.Feedback>
-          </Form.Group> */}
+        <Form.Group>
+          <Form.Label htmlFor="password">Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Your password"
+            name="password"
+            onChange={handleInputChange}
+            value={userFormData.password}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Password is required!
+          </Form.Control.Feedback>
+        </Form.Group>
         <Button
           disabled={
             !(
-              (userFormData.username && userFormData.email)
-              // userFormData.password
+              userFormData.username &&
+              userFormData.email &&
+              userFormData.password
             )
           }
           type="submit"

@@ -1,6 +1,8 @@
 // User controller code will go here
 const { ObjectId } = require("mongoose").Types;
 const { User, Thought } = require("../models");
+// import sign token function from auth
+const { signToken } = require("../utils/auth");
 
 module.exports = {
   // Get all users
@@ -35,9 +37,27 @@ module.exports = {
   },
   // create a new user
   createUser(req, res) {
-    User.create(req.body)
-      .then((user) => res.json(user))
+    const user = User.create(req.body);
+    const token = signToken(user)
+      .then((user) => res.json({ token, user }))
       .catch((err) => res.status(500).json(err));
+  },
+  //login user
+  login({ body }, res) {
+    const user = User.findOne({
+      $or: [{ username: body.username }, { email: body.email }],
+    });
+    if (!user) {
+      return res.status(400).json({ message: "Can't find this user" });
+    }
+
+    const correctPw = user.isCorrectPassword(body.password);
+
+    if (!correctPw) {
+      return res.status(400).json({ message: "Wrong password!" });
+    }
+    const token = signToken(user);
+    res.json({ token, user });
   },
 
   // Update a user by its userID from params
