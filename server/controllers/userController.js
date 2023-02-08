@@ -36,11 +36,20 @@ module.exports = {
       });
   },
   // create a new user
-  createUser(req, res) {
-    const user = User.create(req.body);
-    const token = signToken(user)
-      .then((user) => res.json({ token, user }))
-      .catch((err) => res.status(500).json(err));
+  // createUser(req, res) {
+  //   const user = User.create(req.body);
+  //   const token = signToken(user)
+  //     .then((user) => res.json({ token, user }))
+  //     .catch((err) => res.status(500).json(err));
+  // },
+  async createUser({ body }, res) {
+    const user = await User.create(body);
+
+    if (!user) {
+      return res.status(400).json({ message: 'Something is wrong!' });
+    }
+    const token = signToken(user);
+    res.json({ token, user });
   },
   //login user
   login({ body }, res) {
