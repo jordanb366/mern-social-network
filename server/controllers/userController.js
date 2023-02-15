@@ -52,15 +52,12 @@ module.exports = {
     res.json({ token, user });
   },
   //login user
-  login({ body }, res) {
-    const user = User.findOne({
-      $or: [{ username: body.username }, { email: body.email }],
-    });
+  async login({ body }, res) {
+    const user = await User.findOne({$or: [{ username: body.username }, { email: body.email }, ]});
     if (!user) {
       return res.status(400).json({ message: "Can't find this user" });
     }
-
-    const correctPw = user.isCorrectPassword(body.password);
+    const correctPw = await user.isCorrectPassword(body.password);
 
     if (!correctPw) {
       return res.status(400).json({ message: "Wrong password!" });
@@ -68,6 +65,8 @@ module.exports = {
     const token = signToken(user);
     res.json({ token, user });
   },
+
+  
 
   // Update a user by its userID from params
   updateUser(req, res) {
