@@ -25,7 +25,6 @@ const Home = () => {
     }
   }
 
-
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -36,13 +35,15 @@ const Home = () => {
   return (
     <>
       <h1>Viewing All Users</h1>
-      <div>
+      <div className="container">
         {userData.users?.map((data) => {
           return (
-            <div key={data.id}>
-              <p>ID: {data.id}</p>
-              <p>Username: {data.username}</p>
-              <p>Username: {data.email}</p>
+            <div className="row align-items-center" key={data.id}>
+              <div className="col pb-4">
+                <p>ID: {data.id}</p>
+                <p>Username: {data.username}</p>
+                <p>Username: {data.email}</p>
+              </div>
             </div>
           );
         })}
