@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllUsers } from "../utils/API";
+import { } from "../utils/API";
 
-const Home = () => {
-  const [userData, setUserData] = useState([]);
+const Profile = () => {
+//   const [userData, setUserData] = useState([]);
 
   // const fetchUsers = () => {
   //   fetch("/api/users/")
@@ -14,29 +14,29 @@ const Home = () => {
   //     })
   // }
 
-  async function fetchUsers() {
-    try {
-      const response = await getAllUsers();
-      const data = await response.json();
+//   async function fetchUsers() {
+//     try {
+//       const response = await getAllUsers();
+//       const data = await response.json();
 
-      setUserData(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+//       setUserData(data);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+//   useEffect(() => {
+//     fetchUsers();
+//   }, []);
   // console.log(getAllUsers)
 
-  console.log(userData.users);
+//   console.log(userData.users);
 
   return (
     <>
-      <h1 className="text-center p-4">Viewing All Users</h1>
+      <h1 className="text-center p-4">Viewing your profile</h1>
       <div className="container">
-        {userData.users?.map((data) => {
+        {/* {userData.users?.map((data) => {
           return (
             <div className="row align-items-center" key={data.id}>
               <div className="col pb-4">
@@ -46,10 +46,10 @@ const Home = () => {
               </div>
             </div>
           );
-        })}
+        })} */}
       </div>
     </>
   );
 };
 
-export default Home;
+export default Profile;

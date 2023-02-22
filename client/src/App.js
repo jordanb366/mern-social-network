@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import LoginForm from "./pages/LoginForm";
 import SignupForm from "./pages/SignupForm";
 
@@ -28,6 +29,7 @@ function App() {
             element={<h1 className="display-2">Wrong page!</h1>}
           />
           <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
         </Routes>

@@ -47,7 +47,8 @@ const LoginForm = () => {
 
   return (
     <>
-      <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+      <h2 className="text-center p-4">Login below:</h2>
+      <Form className="container col-4 p-4" noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert
           dismissible
           onClose={() => setShowAlert(false)}

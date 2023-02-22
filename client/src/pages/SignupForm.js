@@ -53,8 +53,9 @@ const SignupForm = () => {
 
   return (
     <div>
+      <h2 className="text-center p-4">No account? Signup below:</h2>
       {/* This is needed for the validation functionality above */}
-      <Form onSubmit={handleFormSubmit}>
+      <Form className="container col-4 p-4" onSubmit={handleFormSubmit}>
         {/* show alert if server response is bad */}
         <Alert
           dismissible
