@@ -5,6 +5,7 @@ const router = require("express").Router();
 // Routes from controller
 const {
   getUsers,
+  getMe,
   getSingleUser,
   createUser,
   login,
@@ -18,6 +19,11 @@ const {
 router.route("/").get(getUsers).post(createUser);
 
 router.route("/login").post(login);
+
+// import middleware
+const { authMiddleware } = require('../../utils/auth');
+
+router.route('/me').get(authMiddleware, getMe);
 
 // /api/users/:userId
 router.route("/:userId").get(getSingleUser).put(updateUser).delete(deleteUser);

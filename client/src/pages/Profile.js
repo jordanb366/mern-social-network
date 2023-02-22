@@ -1,52 +1,48 @@
 import React, { useEffect, useState } from "react";
 
-import { } from "../utils/API";
+import { getMe } from "../utils/API";
+import Auth from '../utils/auth';
 
 const Profile = () => {
-//   const [userData, setUserData] = useState([]);
 
-  // const fetchUsers = () => {
-  //   fetch("/api/users/")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //       setUserData(data)
-  //     })
-  // }
 
-//   async function fetchUsers() {
-//     try {
-//       const response = await getAllUsers();
-//       const data = await response.json();
+const [userData, setUserData] = useState({});
 
-//       setUserData(data);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
+// use this to determine if `useEffect()` hook needs to run again
+const userDataLength = Object.keys(userData).length;
 
-//   useEffect(() => {
-//     fetchUsers();
-//   }, []);
-  // console.log(getAllUsers)
+useEffect(() => {
+  const getUserData = async () => {
+    try {
+      const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-//   console.log(userData.users);
+      if (!token) {
+        return false;
+      }
+
+      const response = await getMe(token);
+
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+
+      const user = await response.json();
+      setUserData(user);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getUserData();
+}, [userDataLength]);
+
+console.log(userData)
 
   return (
     <>
-      <h1 className="text-center p-4">Viewing your profile</h1>
+      <h1 className="text-center p-4">Welcome to your profile, {userData.username}!</h1>
       <div className="container">
-        {/* {userData.users?.map((data) => {
-          return (
-            <div className="row align-items-center" key={data.id}>
-              <div className="col pb-4">
-                <p>ID: {data.id}</p>
-                <p>Username: {data.username}</p>
-                <p>Username: {data.email}</p>
-              </div>
-            </div>
-          );
-        })} */}
+          <h1>{userData.username}</h1>
       </div>
     </>
   );

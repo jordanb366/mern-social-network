@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 import { getAllUsers } from "../utils/API";
 
 const Home = () => {
@@ -40,9 +40,12 @@ const Home = () => {
           return (
             <div className="row align-items-center" key={data.id}>
               <div className="col pb-4">
+              <Link as={Link} to={`users/${data.id}`}>
+                    View Profile
+                  </Link>
                 <p>ID: {data.id}</p>
                 <p>Username: {data.username}</p>
-                <p>Username: {data.email}</p>
+                <p>Profile: {data.email}</p>
               </div>
             </div>
           );

@@ -35,6 +35,17 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
+  async getMe({ user = null, params }, res) {
+    const foundUser = await User.findOne({
+      $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+    });
+
+    if (!foundUser) {
+      return res.status(400).json({ message: 'Cannot find a user with this id!' });
+    }
+
+    res.json(foundUser);
+  },
   // create a new user
   // createUser(req, res) {
   //   const user = User.create(req.body);
