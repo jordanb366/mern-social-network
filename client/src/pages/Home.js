@@ -40,12 +40,12 @@ const Home = () => {
           return (
             <div className="row align-items-center" key={data.id}>
               <div className="col pb-4">
-              <Link as={Link} to={`users/${data.id}`}>
-                    View Profile
-                  </Link>
+                <Link as={Link} to={`users/${data.id}`}>
+                  View Profile
+                </Link>
                 <p>ID: {data.id}</p>
                 <p>Username: {data.username}</p>
-                <p>Profile: {data.email}</p>
+                <p>Email: {data.email}</p>
               </div>
             </div>
           );

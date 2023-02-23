@@ -40,8 +40,15 @@ const SingleUser = () => {
   return (
     <>
       <h1 className="text-center p-4">
-        Viewing user profile: {userData.user.username}
+        Viewing user profile: {userData.user?.username}
       </h1>
+      <div className="col pb-4">
+        <p>ID: {userData.user?.id}</p>
+        <p>Username: {userData.user?.username}</p>
+        <p>Email: {userData.user?.email}</p>
+        <p>Friends: {userData.user?.friends}</p>
+        <p>Thoughts: {userData.user?.thoughts}</p>
+      </div>
     </>
   );
 };
