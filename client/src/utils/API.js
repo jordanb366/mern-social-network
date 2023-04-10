@@ -51,7 +51,7 @@ export const getSingleUser = (userData) => {
 
 export const addFriend = (userData) => {
   return fetch("/api/users/:userId/friends/:friendId", {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

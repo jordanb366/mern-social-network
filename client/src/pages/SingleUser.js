@@ -71,6 +71,12 @@ const SingleUser = () => {
   console.log(loggedInUser);
 
   const handleAddFriend = (loggedInUserId, friendId) => {
+    fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     console.log(loggedInUserId, friendId);
   };
 
