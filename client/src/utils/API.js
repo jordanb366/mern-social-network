@@ -29,7 +29,6 @@ export const loginUser = (userData) => {
   });
 };
 
-
 export const getAllUsers = (userData) => {
   return fetch("/api/users/", {
     method: "GET",
@@ -42,6 +41,16 @@ export const getAllUsers = (userData) => {
 
 export const getSingleUser = (userData) => {
   return fetch("/api/users/:userId", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+};
+
+export const addFriend = (userData) => {
+  return fetch("/api/users/:userId/friends/:friendId", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
