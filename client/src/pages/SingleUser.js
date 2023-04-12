@@ -80,6 +80,16 @@ const SingleUser = () => {
     console.log(loggedInUserId, friendId);
   };
 
+  const removeFriend = (loggedInUserId, friendId) => {
+    fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(loggedInUserId, friendId);
+  };
+
   return (
     <>
       <h1 className="text-center p-4">
@@ -95,6 +105,11 @@ const SingleUser = () => {
           onClick={() => handleAddFriend(loggedInUser._id, userData.user?.id)}
         >
           Add Friend
+        </button>
+        <button
+          onClick={() => removeFriend(loggedInUser._id, userData.user?.id)}
+        >
+          Remove Friend
         </button>
       </div>
     </>
