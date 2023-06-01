@@ -1,48 +1,68 @@
 import React, { useEffect, useState } from "react";
 
 import { getMe } from "../utils/API";
-import Auth from '../utils/auth';
+import Auth from "../utils/auth";
 
 const Profile = () => {
+  const [userData, setUserData] = useState({});
+  const [thoughtText, setThoughtText] = useState("");
 
+  // use this to determine if `useEffect()` hook needs to run again
+  const userDataLength = Object.keys(userData).length;
 
-const [userData, setUserData] = useState({});
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-// use this to determine if `useEffect()` hook needs to run again
-const userDataLength = Object.keys(userData).length;
+        if (!token) {
+          return false;
+        }
 
-useEffect(() => {
-  const getUserData = async () => {
-    try {
-      const token = Auth.loggedIn() ? Auth.getToken() : null;
+        const response = await getMe(token);
 
-      if (!token) {
-        return false;
+        if (!response.ok) {
+          throw new Error("something went wrong!");
+        }
+
+        const user = await response.json();
+        setUserData(user);
+      } catch (err) {
+        console.error(err);
       }
+    };
 
-      const response = await getMe(token);
+    getUserData();
+  }, [userDataLength]);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+  console.log(userData);
 
-      const user = await response.json();
-      setUserData(user);
-    } catch (err) {
-      console.error(err);
-    }
+  const createThought = () => {
+    fetch(`/api/users/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify(thoughtText),
+    });
+    console.log(createThought);
   };
-
-  getUserData();
-}, [userDataLength]);
-
-console.log(userData)
 
   return (
     <>
-      <h1 className="text-center p-4">Welcome to your profile, {userData.username}!</h1>
+      <h1 className="text-center p-4">
+        Welcome to your profile, {userData.username}!
+      </h1>
       <div className="container">
-          <h1>{userData.username}</h1>
+        <h1>{userData.username}</h1>
+      </div>
+      <div>
+        <p>Create a new thought:</p>
+        <textarea
+          value={thoughtText}
+          onChange={(e) => setThoughtText(e.target.value)}
+        ></textarea>
+        <button onClick={() => createThought()}>Create Thought</button>
       </div>
     </>
   );

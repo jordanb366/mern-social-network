@@ -77,7 +77,13 @@ const SingleUser = () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(loggedInUserId, friendId);
+    // console.log(loggedInUserId, friendId);
+    // fetch(`/api/users/${friendId}/friends/${loggedInUserId}`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   };
 
   const removeFriend = (loggedInUserId, friendId) => {
