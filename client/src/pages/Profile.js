@@ -38,12 +38,16 @@ const Profile = () => {
   console.log(userData);
 
   const createThought = () => {
-    fetch(`/api/users/`, {
+    fetch(`/api/thoughts/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(thoughtText),
+      body: JSON.stringify({
+        thoughtText: thoughtText,
+        username: userData.username,
+        userId: userData._id,
+      }),
     });
     console.log(createThought);
   };
