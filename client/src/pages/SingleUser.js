@@ -9,7 +9,7 @@ const SingleUser = () => {
 
   const userId = useParams();
 
-  console.log(userId);
+  // console.log(userId);
 
   const Id = Object.values(userId);
 
@@ -33,11 +33,40 @@ const SingleUser = () => {
   //   }
   // }
 
-  console.log(userData);
+  // console.log(userData);
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  const [thoughtData, setThoughtData] = useState([]);
+
+  // const userId = useParams();
+
+  // console.log(userId);
+
+  // const Id = Object.values(userId);
+
+  const fetchThoughts = () => {
+    fetch(`/api/thoughts/`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setThoughtData(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchThoughts();
+  }, []);
+
+  console.log(thoughtData);
+
+  const thoughts = thoughtData.filter(function (postsBy) {
+    return postsBy.username === userData.user?.username;
+  });
+
+  console.log(thoughts);
 
   // Find the id of the logged in user
   const [loggedInUser, setLoggedInData] = useState([]);
@@ -68,7 +97,7 @@ const SingleUser = () => {
     getUserData();
   }, [userDataLength]);
 
-  console.log(loggedInUser);
+  // console.log(loggedInUser);
 
   const handleAddFriend = (loggedInUserId, friendId) => {
     fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
@@ -93,7 +122,7 @@ const SingleUser = () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(loggedInUserId, friendId);
+    // console.log(loggedInUserId, friendId);
   };
 
   return (
@@ -106,7 +135,11 @@ const SingleUser = () => {
         <p>Username: {userData.user?.username}</p>
         <p>Email: {userData.user?.email}</p>
         <p>Friends: {userData.user?.friends}</p>
-        <p>Thoughts: {userData.user?.thoughts}</p>
+        <p>Thought(s):</p>
+        {thoughts.map((thought) => (
+          <p>{thought.thoughtText}</p>
+        ))}
+
         <button
           onClick={() => handleAddFriend(loggedInUser._id, userData.user?.id)}
         >
