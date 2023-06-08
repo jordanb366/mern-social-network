@@ -39,14 +39,10 @@ const SingleUser = () => {
     fetchUser();
   }, []);
 
+  // Get the thought data from data base to the front-end
   const [thoughtData, setThoughtData] = useState([]);
 
-  // const userId = useParams();
-
-  // console.log(userId);
-
-  // const Id = Object.values(userId);
-
+  // Get request for thoughts
   const fetchThoughts = () => {
     fetch(`/api/thoughts/`)
       .then((res) => res.json())
@@ -62,11 +58,13 @@ const SingleUser = () => {
 
   console.log(thoughtData);
 
+  // Filter to only show thoughts for single user
   const thoughts = thoughtData.filter(function (postsBy) {
     return postsBy.username === userData.user?.username;
   });
 
   console.log(thoughts);
+  // ---------------- Retrieving data for logged in user
 
   // Find the id of the logged in user
   const [loggedInUser, setLoggedInData] = useState([]);
@@ -99,6 +97,7 @@ const SingleUser = () => {
 
   // console.log(loggedInUser);
 
+  // ---- Function to handle adding a friend
   const handleAddFriend = (loggedInUserId, friendId) => {
     fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
       method: "POST",
@@ -115,6 +114,7 @@ const SingleUser = () => {
     // });
   };
 
+  // --- Function to handle removing a friend
   const removeFriend = (loggedInUserId, friendId) => {
     fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
       method: "DELETE",

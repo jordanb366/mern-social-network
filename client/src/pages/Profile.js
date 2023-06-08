@@ -37,6 +37,8 @@ const Profile = () => {
 
   console.log(userData);
 
+  // ---- Create a thought POST request to send to database
+
   const createThought = () => {
     fetch(`/api/thoughts/`, {
       method: "POST",
