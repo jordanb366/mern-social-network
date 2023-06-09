@@ -141,11 +141,15 @@ const SingleUser = () => {
         ))}
 
         <button
+          type="button"
+          className="btn btn-success m-2"
           onClick={() => handleAddFriend(loggedInUser._id, userData.user?.id)}
         >
           Add Friend
         </button>
         <button
+          type="button"
+          className="btn btn-danger m-2"
           onClick={() => removeFriend(loggedInUser._id, userData.user?.id)}
         >
           Remove Friend

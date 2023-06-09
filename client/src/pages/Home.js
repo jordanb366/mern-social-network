@@ -34,7 +34,7 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="text-center p-4">Viewing All Users</h1>
+      <h1 className="text-center p-4 m-4">You are Viewing All Users</h1>
       <div className="container">
         {userData.users?.map((data) => {
           return (
