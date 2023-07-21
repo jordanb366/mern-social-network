@@ -63,12 +63,20 @@ const Profile = () => {
         <h1>{userData.username}</h1>
       </div>
       <div>
-        <p>Create a new thought:</p>
-        <textarea
-          value={thoughtText}
-          onChange={(e) => setThoughtText(e.target.value)}
-        ></textarea>
-        <button onClick={() => createThought()}>Create Thought</button>
+        <p className="p-4">Create a new thought:</p>
+        <form class="form-inline">
+          <textarea
+            value={thoughtText}
+            onChange={(e) => setThoughtText(e.target.value)}
+            className="p-4 m-4"
+          ></textarea>
+          <button
+            onClick={() => createThought()}
+            className="btn btn-success m-4"
+          >
+            Create Thought
+          </button>
+        </form>
       </div>
     </>
   );
