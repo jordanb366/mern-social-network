@@ -137,10 +137,10 @@ const SingleUser = () => {
         <p>Friends: {userData.user?.friends}</p>
         <p>Thought(s):</p>
         {thoughts.map((thought) => (
+          <div className="mt-4 pt-4">
           <p>{thought.thoughtText}</p>
-        ))}
-        {thoughts.map((createdDate) => (
-          <p>{createdDate.createdAt}</p>
+          <p>Created at: {thought.createdAt}</p>
+          </div>
         ))}
 
         <button
