@@ -139,6 +139,9 @@ const SingleUser = () => {
         {thoughts.map((thought) => (
           <p>{thought.thoughtText}</p>
         ))}
+        {thoughts.map((createdDate) => (
+          <p>{createdDate.createdAt}</p>
+        ))}
 
         <button
           type="button"
