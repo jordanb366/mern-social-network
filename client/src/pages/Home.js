@@ -5,15 +5,6 @@ import { getAllUsers } from "../utils/API";
 const Home = () => {
   const [userData, setUserData] = useState([]);
 
-  // const fetchUsers = () => {
-  //   fetch("/api/users/")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //       setUserData(data)
-  //     })
-  // }
-
   async function fetchUsers() {
     try {
       const response = await getAllUsers();
@@ -28,13 +19,12 @@ const Home = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-  // console.log(getAllUsers)
 
   console.log(userData.users);
 
   return (
     <>
-      <h1 className="text-center p-4 m-4">You are Viewing All Users</h1>
+      <h2 className="text-center p-4 m-4">You are Viewing All Users</h2>
       <div className="container">
         {userData.users?.map((data) => {
           return (

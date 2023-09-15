@@ -6,10 +6,9 @@ import { getMe } from "../utils/API";
 
 const SingleUser = () => {
   const [userData, setUserData] = useState([]);
+  const [reactionText, setReactionText] = useState("");
 
   const userId = useParams();
-
-  // console.log(userId);
 
   const Id = Object.values(userId);
 
@@ -21,19 +20,6 @@ const SingleUser = () => {
         setUserData(data);
       });
   };
-
-  // async function fetchUsers() {
-  //   try {
-  //     const response = await getSingleUser(userId);
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setUserData(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  // console.log(userData);
 
   useEffect(() => {
     fetchUser();
@@ -95,8 +81,6 @@ const SingleUser = () => {
     getUserData();
   }, [userDataLength]);
 
-  // console.log(loggedInUser);
-
   // ---- Function to handle adding a friend
   const handleAddFriend = (loggedInUserId, friendId) => {
     fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
@@ -105,13 +89,6 @@ const SingleUser = () => {
         "Content-Type": "application/json",
       },
     });
-    // console.log(loggedInUserId, friendId);
-    // fetch(`/api/users/${friendId}/friends/${loggedInUserId}`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
   };
 
   // --- Function to handle removing a friend
@@ -122,7 +99,20 @@ const SingleUser = () => {
         "Content-Type": "application/json",
       },
     });
-    // console.log(loggedInUserId, friendId);
+  };
+
+  const createReaction = (thoughtId) => {
+    fetch(`/api/thoughts/${thoughtId}/reactions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        reactionBody: reactionText,
+        username: userData.username,
+      }),
+    });
+    console.log(createReaction);
   };
 
   return (
@@ -138,8 +128,21 @@ const SingleUser = () => {
         <p>Thought(s):</p>
         {thoughts.map((thought) => (
           <div className="mt-4 pt-4">
-          <p>{thought.thoughtText}</p>
-          <p>Created at: {thought.createdAt}</p>
+            <p>{thought.thoughtText}</p>
+            <p>Created at: {thought.createdAt}</p>
+            <form className="form-inline">
+              <textarea
+                value={reactionText}
+                onChange={(e) => setReactionText(e.target.value)}
+                className="p-4 m-4"
+              ></textarea>
+              <button
+                onClick={() => createReaction(thought._id)}
+                className="btn btn-success m-4"
+              >
+                Create A Reaction
+              </button>
+            </form>
           </div>
         ))}
 

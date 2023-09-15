@@ -64,7 +64,7 @@ const Profile = () => {
       </div>
       <div>
         <p className="p-4">Create a new thought:</p>
-        <form class="form-inline">
+        <form className="form-inline">
           <textarea
             value={thoughtText}
             onChange={(e) => setThoughtText(e.target.value)}
