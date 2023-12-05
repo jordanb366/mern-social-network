@@ -115,37 +115,20 @@ const SingleUser = () => {
     console.log(createReaction);
   };
 
+  function handleReaction(evt) {
+    const value = evt.target.value;
+    setReactionText({
+      ...reactionText,
+      [evt.target.Reaction]: value,
+    });
+  }
+
   return (
     <>
       <h1 className="text-center p-4">
         Viewing user profile: {userData.user?.username}
       </h1>
       <div className="col pb-4">
-        <p>ID: {userData.user?.id}</p>
-        <p>Username: {userData.user?.username}</p>
-        <p>Email: {userData.user?.email}</p>
-        <p>Friends: {userData.user?.friends}</p>
-        <p>Thought(s):</p>
-        {thoughts.map((thought) => (
-          <div className="mt-4 pt-4">
-            <p>{thought.thoughtText}</p>
-            <p>Created at: {thought.createdAt}</p>
-            <form className="form-inline">
-              <textarea
-                value={reactionText}
-                onChange={(e) => setReactionText(e.target.value)}
-                className="p-4 m-4"
-              ></textarea>
-              <button
-                onClick={() => createReaction(thought._id)}
-                className="btn btn-success m-4"
-              >
-                Create A Reaction
-              </button>
-            </form>
-          </div>
-        ))}
-
         <button
           type="button"
           className="btn btn-success m-2"
@@ -160,6 +143,32 @@ const SingleUser = () => {
         >
           Remove Friend
         </button>
+        <p>ID: {userData.user?.id}</p>
+        <p>Username: {userData.user?.username}</p>
+        <p>Email: {userData.user?.email}</p>
+        <p>Friends: {userData.user?.friends}</p>
+        <p>Thought(s):</p>
+        {thoughts.map((thought) => (
+          <div key={thought._id} className="mt-4 pt-4">
+            <p>{thought.thoughtText}</p>
+            <p>Created at: {thought.createdAt}</p>
+            <form className="form-inline">
+              <textarea
+                name="Reaction"
+                value={reactionText}
+                onChange={handleReaction}
+                className="p-4 m-4"
+              ></textarea>
+              <button
+                id={thought._id}
+                onClick={() => createReaction(thought._id)}
+                className="btn btn-success m-4"
+              >
+                Create A Reaction
+              </button>
+            </form>
+          </div>
+        ))}
       </div>
     </>
   );
