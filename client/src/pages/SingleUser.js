@@ -16,7 +16,7 @@ const SingleUser = () => {
     fetch(`/api/users/${Id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setUserData(data);
       });
   };
@@ -42,14 +42,14 @@ const SingleUser = () => {
     fetchThoughts();
   }, []);
 
-  console.log(thoughtData);
+  // console.log(thoughtData);
 
   // Filter to only show thoughts for single user
   const thoughts = thoughtData.filter(function (postsBy) {
     return postsBy.username === userData.user?.username;
   });
 
-  console.log(thoughts);
+  // console.log(thoughts);
   // ---------------- Retrieving data for logged in user
 
   // Find the id of the logged in user
@@ -113,15 +113,8 @@ const SingleUser = () => {
       }),
     });
     console.log(createReaction);
+    console.log(reactionText);
   };
-
-  function handleReaction(evt) {
-    const value = evt.target.value;
-    setReactionText({
-      ...reactionText,
-      [evt.target.Reaction]: value,
-    });
-  }
 
   return (
     <>
@@ -155,13 +148,12 @@ const SingleUser = () => {
             <form className="form-inline">
               <textarea
                 name="Reaction"
-                value={reactionText}
-                onChange={handleReaction}
+                // value={reactionText}
+                onChange={(e) => setReactionText(e.target.value)}
                 className="p-4 m-4"
               ></textarea>
               <button
-                id={thought._id}
-                onClick={() => createReaction(thought._id)}
+                onClick={() => createReaction("647e43fb6cb54028d9964d0c")}
                 className="btn btn-success m-4"
               >
                 Create A Reaction
