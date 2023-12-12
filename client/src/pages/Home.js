@@ -20,8 +20,6 @@ const Home = () => {
     fetchUsers();
   }, []);
 
-  console.log(userData.users);
-
   return (
     <>
       <h2 className="text-center p-4 m-4">You are Viewing All Users</h2>

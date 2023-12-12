@@ -109,11 +109,11 @@ const SingleUser = () => {
       },
       body: JSON.stringify({
         reactionBody: reactionText,
-        username: userData.username,
+        username: loggedInUser.username,
       }),
     });
-    console.log(createReaction);
     console.log(reactionText);
+    console.log(thoughtId);
   };
 
   return (
@@ -147,7 +147,7 @@ const SingleUser = () => {
             <p>Created at: {thought.createdAt}</p>
             <form className="form-inline">
               <textarea
-                name="Reaction"
+                // name="Reaction"
                 // value={reactionText}
                 onChange={(e) => setReactionText(e.target.value)}
                 className="p-4 m-4"
