@@ -153,7 +153,8 @@ const SingleUser = () => {
                 className="p-4 m-4"
               ></textarea>
               <button
-                onClick={() => createReaction("647e43fb6cb54028d9964d0c")}
+                id={thought._id}
+                onClick={(e) => createReaction(e.currentTarget.id)}
                 className="btn btn-success m-4"
               >
                 Create A Reaction
