@@ -1,12 +1,10 @@
 ## To Dos
 
-1. Finish styling - need to better style the "Thoughts"
+1. Display "Reactions" under thoughts
 
-2. Works now!!! Create Reaction Posts
-   -Will want to have a better way to organize posting reactions to thoughts
-   \*May be running into an issue in the thoughtController for createReaction - check on back-end as next step in troubleshooting
+2. Finish styling - need to better style the "Thoughts"
 
-3. Works now!!!! May need to rework thoughtControllers for querying thoughts from database by the thought id
+3. Find a better way to run - may need to rework thoughtControllers for querying thoughts from database by the thought id
 
 4. Add more comments to organize code more neatly
 
