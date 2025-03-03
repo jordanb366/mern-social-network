@@ -9,3 +9,5 @@
 4. Add more comments to organize code more neatly
 
 5. Clean up unused code
+
+\*\*Fix Node packages, app will currently error out
