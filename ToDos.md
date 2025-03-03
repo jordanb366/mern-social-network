@@ -1,5 +1,7 @@
 ## To Dos
 
+\*\*Needed to add "--openssl-legacy-provider" to react start and build scripts, app runs now. Need to research on what NPM packages need updating for React
+
 1. Display "Reactions" under thoughts
 
 2. Finish styling - need to better style the "Thoughts"
@@ -9,5 +11,3 @@
 4. Add more comments to organize code more neatly
 
 5. Clean up unused code
-
-\*\*Fix Node packages, app will currently error out
