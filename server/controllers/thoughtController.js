@@ -100,4 +100,9 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  getReaction(req, res) {
+    Reaction.find()
+      .then((reactions) => res.json(reactions))
+      .catch((err) => res.status(500).json(err));
+  },
 };

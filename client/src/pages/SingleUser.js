@@ -49,6 +49,10 @@ const SingleUser = () => {
     return postsBy.username === userData.user?.username;
   });
 
+  for (let i = 0; i < thoughtData.length; i++) {
+    const reactions = thoughtData[i].reactions;
+    console.log(reactions[i]);
+  }
   // console.log(thoughts);
   // ---------------- Retrieving data for logged in user
 
@@ -146,7 +150,7 @@ const SingleUser = () => {
             <p>{thought.thoughtText}</p>
             <p>Created at: {thought.createdAt}</p>
             <p>{}</p>
-            {console.log(thought.reactions)}
+            {/* {console.log(thought.reactions)} */}
             <form className="form-inline">
               <textarea
                 // name="Reaction"

@@ -11,10 +11,14 @@ const {
   updateThought,
   createReaction,
   deleteReaction,
+  getReaction,
 } = require("../../controllers/thoughtController.js");
 
 // /api/users
 router.route("/").get(getThoughts).post(createThought);
+
+// /api/users
+router.route("/reactions").get(getReaction);
 
 // /api/users/:thought
 router
