@@ -49,10 +49,6 @@ const SingleUser = () => {
     return postsBy.username === userData.user?.username;
   });
 
-  for (let i = 0; i < thoughtData.length; i++) {
-    const reactions = thoughtData[i].reactions;
-    console.log(reactions[i]);
-  }
   // console.log(thoughts);
   // ---------------- Retrieving data for logged in user
 
@@ -150,7 +146,7 @@ const SingleUser = () => {
             <p>{thought.thoughtText}</p>
             <p>Created at: {thought.createdAt}</p>
             <p>{}</p>
-            {/* {console.log(thought.reactions)} */}
+
             <form className="form-inline">
               <textarea
                 // name="Reaction"
@@ -166,6 +162,15 @@ const SingleUser = () => {
                 Create A Reaction
               </button>
             </form>
+            {thought.reactions.map((reaction) => (
+              <div key={reaction._id}>
+                <p>{reaction.reactionBody}</p>
+                <p>By: {reaction.username}</p>
+                <>
+                  <hr />
+                </>
+              </div>
+            ))}
           </div>
         ))}
       </div>
