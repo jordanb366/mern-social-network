@@ -162,10 +162,17 @@ const SingleUser = () => {
                 Create A Reaction
               </button>
             </form>
+            <>
+              <hr />
+            </>
+            <h4>Reaction(s)</h4>
+            <>
+              <hr />
+            </>
             {thought.reactions.map((reaction) => (
               <div key={reaction._id}>
                 <p>{reaction.reactionBody}</p>
-                <p>By: {reaction.username}</p>
+                <p>Reaction By: {reaction.username}</p>
                 <>
                   <hr />
                 </>
