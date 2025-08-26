@@ -6,7 +6,7 @@
 
 1. Display "Reactions" under thoughts
 
-2. Finish styling - need to better style the "Thoughts"
+2. Finish styling - need to better style the "Thoughts" and Reactions, needs better layout
 
 3. Find a better way to run - may need to rework thoughtControllers for querying thoughts from database by the thought id
 
