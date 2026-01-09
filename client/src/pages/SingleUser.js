@@ -167,6 +167,7 @@ const SingleUser = () => {
                 <hr />
               </>
               <h4>Reaction(s)</h4>
+              <button className="btn btn-info m-2">View Reactions</button>
               <>
                 <hr />
               </>
