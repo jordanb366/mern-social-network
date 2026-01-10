@@ -116,6 +116,8 @@ const SingleUser = () => {
     console.log(thoughtId);
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
     <>
       <h1 className="text-center p-4">
@@ -141,45 +143,55 @@ const SingleUser = () => {
           <p>Username: {userData.user?.username}</p>
           <p>Email: {userData.user?.email}</p>
           <p>Friends: {userData.user?.friends}</p>
-          <p>Thought(s):</p>
+          <p></p>
           {thoughts.map((thought) => (
-            <div key={thought._id} className="mt-4 pt-4">
-              <p>{thought.thoughtText}</p>
-              <p>Created at: {thought.createdAt}</p>
-              <p>{}</p>
-
-              <form className="form-inline">
-                <textarea
-                  // name="Reaction"
-                  // value={reactionText}
-                  onChange={(e) => setReactionText(e.target.value)}
-                  className="p-4 m-4"
-                ></textarea>
+            <div key={thought._id} className="mt-4 pt-4 card">
+              <div className="card-body">
+                <h4>Thoughts</h4>
+                <p>{thought.thoughtText}</p>
+                <p>Created at: {thought.createdAt}</p>
+                <p>{}</p>
+                <form className="form-inline">
+                  <textarea
+                    // name="Reaction"
+                    // value={reactionText}
+                    onChange={(e) => setReactionText(e.target.value)}
+                    className="p-4 m-4"
+                  ></textarea>
+                  <button
+                    id={thought._id}
+                    onClick={(e) => createReaction(e.currentTarget.id)}
+                    className="btn btn-success m-4"
+                  >
+                    Create A Reaction
+                  </button>
+                </form>
+                <>
+                  <hr />
+                </>
                 <button
-                  id={thought._id}
-                  onClick={(e) => createReaction(e.currentTarget.id)}
-                  className="btn btn-success m-4"
+                  className="btn btn-info mb-3"
+                  onClick={() =>
+                    setIsVisible(isVisible === thought._id ? null : thought._id)
+                  }
                 >
-                  Create A Reaction
+                  {isVisible === thought._id ? "Hide" : "Show"} Reactions
                 </button>
-              </form>
-              <>
                 <hr />
-              </>
-              <h4>Reaction(s)</h4>
-              <button className="btn btn-info m-2">View Reactions</button>
-              <>
-                <hr />
-              </>
-              {thought.reactions.map((reaction) => (
-                <div key={reaction._id}>
-                  <p>{reaction.reactionBody}</p>
-                  <p>Reaction By: {reaction.username}</p>
-                  <>
-                    <hr />
-                  </>
-                </div>
-              ))}
+
+                {/* Reactions - Only visible if this thought's ID matches */}
+                {isVisible === thought._id && (
+                  <div className="reactions">
+                    {thought.reactions.map((reaction) => (
+                      <div key={reaction._id}>
+                        <p>{reaction.reactionBody}</p>
+                        <p>Reaction By: {reaction.username}</p>
+                        <hr />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
