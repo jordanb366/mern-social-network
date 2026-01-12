@@ -125,20 +125,28 @@ const SingleUser = () => {
       </h1>
       <div className="container">
         <div className="col pb-4">
-          <button
-            type="button"
-            className="btn btn-success m-2"
-            onClick={() => handleAddFriend(loggedInUser._id, userData.user?.id)}
-          >
-            Add Friend
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger m-2"
-            onClick={() => removeFriend(loggedInUser._id, userData.user?.id)}
-          >
-            Remove Friend
-          </button>
+          {Auth.loggedIn() && (
+            <>
+              <button
+                type="button"
+                className="btn btn-success m-2"
+                onClick={() =>
+                  handleAddFriend(loggedInUser._id, userData.user?.id)
+                }
+              >
+                Add Friend
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger m-2"
+                onClick={() =>
+                  removeFriend(loggedInUser._id, userData.user?.id)
+                }
+              >
+                Remove Friend
+              </button>
+            </>
+          )}
           <p>ID: {userData.user?.id}</p>
           <p>Username: {userData.user?.username}</p>
           <p>Email: {userData.user?.email}</p>
