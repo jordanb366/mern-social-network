@@ -8,22 +8,17 @@ const SingleUser = () => {
   const [userData, setUserData] = useState([]);
   const [reactionText, setReactionText] = useState("");
 
-  const userId = useParams();
-
-  const Id = Object.values(userId);
-
-  const fetchUser = () => {
-    fetch(`/api/users/${Id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        setUserData(data);
-      });
-  };
+  const { UserId } = useParams();
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    if (!UserId) return;
+    fetch(`/api/users/${UserId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data);
+      })
+      .catch((err) => console.error(err));
+  }, [UserId]);
 
   // Get the thought data from data base to the front-end
   const [thoughtData, setThoughtData] = useState([]);
@@ -150,7 +145,15 @@ const SingleUser = () => {
           <p>ID: {userData.user?.id}</p>
           <p>Username: {userData.user?.username}</p>
           <p>Email: {userData.user?.email}</p>
-          <p>Friends: {userData.user?.friends}</p>
+          <p>
+            Friends:{" "}
+            {userData.user?.friends?.map((friend, index) => (
+              <span key={friend._id}>
+                <Link to={`/users/${friend._id}`}>{friend.username}</Link>
+                {index < userData.user.friends.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </p>
           <p></p>
           {thoughts.map((thought) => (
             <div key={thought._id} className="mt-4 pt-4 card">

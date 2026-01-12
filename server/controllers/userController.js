@@ -23,6 +23,7 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
+      .populate("friends")
       .then(async (user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
@@ -37,11 +38,16 @@ module.exports = {
   },
   async getMe({ user = null, params }, res) {
     const foundUser = await User.findOne({
-      $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+      $or: [
+        { _id: user ? user._id : params.id },
+        { username: params.username },
+      ],
     });
 
     if (!foundUser) {
-      return res.status(400).json({ message: 'Cannot find a user with this id!' });
+      return res
+        .status(400)
+        .json({ message: "Cannot find a user with this id!" });
     }
 
     res.json(foundUser);
@@ -57,14 +63,16 @@ module.exports = {
     const user = await User.create(body);
 
     if (!user) {
-      return res.status(400).json({ message: 'Something is wrong!' });
+      return res.status(400).json({ message: "Something is wrong!" });
     }
     const token = signToken(user);
     res.json({ token, user });
   },
   //login user
   async login({ body }, res) {
-    const user = await User.findOne({$or: [{ username: body.username }, { email: body.email }, ]});
+    const user = await User.findOne({
+      $or: [{ username: body.username }, { email: body.email }],
+    });
     if (!user) {
       return res.status(400).json({ message: "Can't find this user" });
     }
@@ -76,8 +84,6 @@ module.exports = {
     const token = signToken(user);
     res.json({ token, user });
   },
-
-  
 
   // Update a user by its userID from params
   updateUser(req, res) {
