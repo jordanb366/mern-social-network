@@ -58,3 +58,10 @@ export const addFriend = (userData) => {
     body: JSON.stringify(userData),
   });
 };
+
+export const getAllThoughts = () => {
+  return fetch("/api/thoughts", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+};

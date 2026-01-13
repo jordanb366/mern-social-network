@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllUsers } from "../utils/API";
+import { getAllUsers, getAllThoughts } from "../utils/API";
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
+  const [thoughtData, setThoughtData] = useState([]);
 
   async function fetchUsers() {
     try {
@@ -16,8 +17,19 @@ const Home = () => {
     }
   }
 
+  async function fetchThoughts() {
+    try {
+      const res = await getAllThoughts();
+      const data = await res.json();
+      setThoughtData(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     fetchUsers();
+    fetchThoughts();
   }, []);
 
   return (
@@ -38,6 +50,23 @@ const Home = () => {
             </div>
           );
         })}
+      </div>
+      <h3 className="text-center p-4">All Thoughts</h3>
+      <div className="container">
+        {thoughtData.length ? (
+          thoughtData.map((t) => (
+            <div className="card mb-3" key={t._id}>
+              <div className="card-body">
+                <h5 className="card-title">Post by: {t.username}</h5>
+                <p className="card-text">{t.thoughtText}</p>
+                <p className="text-muted">{t.createdAt}</p>
+                <p className="small">Reactions: {t.reactions?.length || 0}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No thoughts yet.</p>
+        )}
       </div>
     </>
   );
