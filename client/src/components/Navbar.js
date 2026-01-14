@@ -14,7 +14,7 @@ const AppNavbar = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar" />
           <Navbar.Collapse id="navbar">
-            <Nav className="ml-auto">
+            <Nav className="ms-auto">
               {/* if user is logged in show profile link and logout */}
               {Auth.loggedIn() ? (
                 <>
