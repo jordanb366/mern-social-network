@@ -34,7 +34,7 @@ const Home = () => {
 
   return (
     <>
-      <h2 className="text-center p-4 m-4">You are Viewing All Users</h2>
+      {/* <h2 className="text-center p-4 m-4">You are Viewing All Users</h2>
       <div className="container">
         {userData.users?.map((data) => {
           return (
@@ -50,7 +50,7 @@ const Home = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
       <h3 className="text-center p-4">All Thoughts</h3>
       <div className="container">
         {thoughtData.length ? (
