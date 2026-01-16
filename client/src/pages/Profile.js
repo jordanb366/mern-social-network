@@ -51,7 +51,7 @@ const Profile = () => {
         userId: userData._id,
       }),
     });
-    console.log(createThought);
+    console.log(thoughtText);
   };
 
   return (
@@ -71,7 +71,8 @@ const Profile = () => {
             className="p-4 m-4"
           ></textarea>
           <button
-            onClick={() => createThought()}
+            type="button"
+            onClick={(e) => createThought(e)}
             className="btn btn-success m-4"
           >
             Create Thought

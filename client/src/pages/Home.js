@@ -32,38 +32,37 @@ const Home = () => {
     fetchThoughts();
   }, []);
 
+  const usersByName = (userData.users || []).reduce((acc, u) => {
+    acc[u.username] = u;
+    return acc;
+  }, {});
+
   return (
     <>
-      {/* <h2 className="text-center p-4 m-4">You are Viewing All Users</h2>
-      <div className="container">
-        {userData.users?.map((data) => {
-          return (
-            <div className="row align-items-center" key={data.id}>
-              <div className="col pb-4">
-                <Link as={Link} to={`users/${data.id}`}>
-                  View Profile
-                </Link>
-                <p>ID: {data.id}</p>
-                <p>Username: {data.username}</p>
-                <p>Email: {data.email}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div> */}
       <h3 className="text-center p-4">All Thoughts</h3>
       <div className="container">
         {thoughtData.length ? (
-          thoughtData.map((t) => (
-            <div className="card mb-3" key={t._id}>
-              <div className="card-body">
-                <h5 className="card-title">Post by: {t.username}</h5>
-                <p className="card-text">{t.thoughtText}</p>
-                <p className="text-muted">{t.createdAt}</p>
-                <p className="small">Reactions: {t.reactions?.length || 0}</p>
+          thoughtData.map((t) => {
+            const user = usersByName[t.username];
+            const userId = user?._id || user?.id;
+            return (
+              <div className="card mb-3" key={t._id}>
+                <div className="card-body">
+                  <h5 className="card-title">
+                    Post by:{" "}
+                    {userId ? (
+                      <Link to={`/users/${userId}`}>{t.username}</Link>
+                    ) : (
+                      t.username
+                    )}
+                  </h5>
+                  <p className="card-text">{t.thoughtText}</p>
+                  <p className="text-muted">{t.createdAt}</p>
+                  <p className="small">Reactions: {t.reactions?.length || 0}</p>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No thoughts yet.</p>
         )}
