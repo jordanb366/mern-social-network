@@ -24,13 +24,15 @@ const AppNavbar = () => {
               {/* if user is logged in show profile link and logout */}
               {loggedIn ? (
                 <>
-                  <Navbar.Text className="text-light me-2">
-                    Signed in as <strong className="ms-1">{username}</strong>
-                  </Navbar.Text>
+                  <Navbar.Text className="text-light">Signed in as</Navbar.Text>
 
                   <NavDropdown
                     align="end"
-                    title={<span className="text-light">Account</span>}
+                    title={
+                      <span className="text-light">
+                        <strong className="ms-1">{username}</strong>
+                      </span>
+                    }
                     id="user-dropdown"
                     menuVariant="dark"
                   >
