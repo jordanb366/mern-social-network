@@ -113,6 +113,12 @@ const SingleUser = () => {
 
   const [isVisible, setIsVisible] = useState(false);
 
+  const isFriend = !!loggedInUser?.friends?.some((friend) => {
+    const friendId = friend?._id ?? friend?.id ?? friend; // support object or id string
+    const viewedId = userData?.user?._id ?? userData?.user?.id;
+    return friendId && viewedId && friendId.toString() === viewedId.toString();
+  });
+
   return (
     <>
       <h1 className="text-center p-4">
@@ -122,24 +128,27 @@ const SingleUser = () => {
         <div className="col pb-4">
           {Auth.loggedIn() && (
             <>
-              <button
-                type="button"
-                className="btn btn-success m-2"
-                onClick={() =>
-                  handleAddFriend(loggedInUser._id, userData.user?.id)
-                }
-              >
-                Add Friend
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger m-2"
-                onClick={() =>
-                  removeFriend(loggedInUser._id, userData.user?.id)
-                }
-              >
-                Remove Friend
-              </button>
+              {isFriend ? (
+                <button
+                  type="button"
+                  className="btn btn-danger m-2"
+                  onClick={() =>
+                    removeFriend(loggedInUser._id, userData.user?.id)
+                  }
+                >
+                  Remove Friend
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success m-2"
+                  onClick={() =>
+                    handleAddFriend(loggedInUser._id, userData.user?.id)
+                  }
+                >
+                  Add Friend
+                </button>
+              )}
             </>
           )}
           <p>ID: {userData.user?.id}</p>
