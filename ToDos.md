@@ -10,7 +10,6 @@
 ### Client
 
 - [ ] **Display Reactions under thoughts**
-
   - **Priority:** High · **Owner:** Unassigned · **Estimate:** 2–4h · **Status:** Todo
   - **Acceptance Criteria:** Reactions render under each thought with counts; adding/removing a reaction updates the UI without a full page reload.
   - **Subtasks:**
@@ -20,7 +19,6 @@
     - [ ] QA: manual tests for add/remove reaction flows.
 
 - [ ] **Add comments to client codebase**
-
   - **Priority:** Medium · **Owner:** Unassigned · **Estimate:** 1–2h · **Status:** Todo
   - **Acceptance Criteria:** Key components and pages have brief header comments (purpose, props, side effects).
   - **Subtasks:**
@@ -40,7 +38,6 @@
 ### Server
 
 - [ ] **Review and fix thought controllers / query patterns**
-
   - **Priority:** High · **Owner:** Unassigned · **Estimate:** 3–5h · **Status:** Todo
   - **Acceptance Criteria:** Controller queries fetch thoughts and associated reactions efficiently by thought id; endpoints return required fields only.
   - **Subtasks:**
@@ -59,13 +56,12 @@
 
 ### Features
 
-- [ ] \*\*Review the "Add Friend" and "Remove Friend"
-- **Acceptance Criteria:** Find a way to display the users friendslist by username instead of just the ID
+- [ ] \*\* Work on the users "profile" page - UI updates, show users thoughts in the dashboard as well
+- **Acceptance Criteria:** users "profile" page - UI updates, show users thoughts in the dashboard as well
 
 ### Repo / Process
 
 - [ ] **Add issue & PR templates**
-
   - **Priority:** Low · **Owner:** Unassigned · **Estimate:** 0.5–1h · **Status:** Todo
 
 - [ ] **Create milestone: v0.1 (UI polish)**

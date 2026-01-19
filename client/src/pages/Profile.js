@@ -37,6 +37,24 @@ const Profile = () => {
 
   console.log(userData);
 
+  const [thoughts, setThoughts] = useState([]);
+
+  // helper to fetch and filter thoughts for current user
+  const fetchThoughts = () => {
+    if (!userData.username) return;
+    fetch("/api/thoughts")
+      .then((res) => res.json())
+      .then((data) => {
+        setThoughts(data.filter((t) => t.username === userData.username));
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // fetch when we have the username
+  useEffect(() => {
+    fetchThoughts();
+  }, [userData.username]);
+
   // ---- Create a thought POST request to send to database
 
   const createThought = () => {
@@ -78,6 +96,21 @@ const Profile = () => {
             Create Thought
           </button>
         </form>
+      </div>
+      <div className="mt-4">
+        <h3>Your Thoughts</h3>
+        {thoughts.length === 0 ? (
+          <p>No thoughts yet.</p>
+        ) : (
+          thoughts.map((t) => (
+            <div key={t._id} className="card mb-2">
+              <div className="card-body">
+                <p>{t.thoughtText}</p>
+                <small>Created: {t.createdAt}</small>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </>
   );
