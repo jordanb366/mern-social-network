@@ -107,6 +107,8 @@ const SingleUser = () => {
         username: loggedInUser.username,
       }),
     });
+    setReactionText("");
+    fetchThoughts();
     console.log(reactionText);
     console.log(thoughtId);
   };
@@ -198,13 +200,14 @@ const SingleUser = () => {
                 <form className="form-inline">
                   <textarea
                     // name="Reaction"
-                    // value={reactionText}
+                    value={reactionText}
                     onChange={(e) => setReactionText(e.target.value)}
                     className="p-4 m-4"
                   ></textarea>
                   <button
+                    type="button"
                     id={thought._id}
-                    onClick={(e) => createReaction(e.currentTarget.id)}
+                    onClick={() => createReaction(thought._id)}
                     className="btn btn-success m-4"
                   >
                     Create A Reaction
@@ -213,20 +216,24 @@ const SingleUser = () => {
                 <>
                   <hr />
                 </>
-                <button
-                  className="btn btn-info mb-3"
-                  onClick={() =>
-                    setIsVisible(isVisible === thought._id ? null : thought._id)
-                  }
-                >
-                  {isVisible === thought._id ? "Hide" : "Show"} Reactions
-                </button>
+                {thought.reactions && thought.reactions.length > 0 && (
+                  <button
+                    className="btn btn-info mb-3"
+                    onClick={() =>
+                      setIsVisible(
+                        isVisible === thought._id ? null : thought._id,
+                      )
+                    }
+                  >
+                    {isVisible === thought._id ? "Hide" : "Show"} Reactions
+                  </button>
+                )}
                 <hr />
 
                 {/* Reactions - Only visible if this thought's ID matches */}
                 {isVisible === thought._id && (
                   <div className="reactions">
-                    {thought.reactions.map((reaction) => (
+                    {(thought.reactions || []).map((reaction) => (
                       <div key={reaction._id}>
                         <p>{reaction.reactionBody}</p>
                         <p>Reaction By: {reaction.username}</p>
