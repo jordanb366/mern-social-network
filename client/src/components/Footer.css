@@ -1,0 +1,78 @@
+.app-footer {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  color: #374151;
+  border-top: 1px solid rgba(15, 23, 42, 0.04);
+  font-size: 0.95rem;
+}
+
+/* colored stripe to clearly mark the start of the footer */
+.app-footer::before {
+  content: "";
+  display: block;
+  height: 6px;
+  background: linear-gradient(90deg, #0d6efd 0%, #6f42c1 50%, #20c997 100%);
+  border-radius: 4px 4px 0 0;
+  margin: -1px 16px 12px; /* pulls stripe flush with container edges */
+}
+
+/* inner layout tweaks */
+.footer-inner {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* brand */
+.brand-text {
+  font-weight: 700;
+  margin-left: 10px;
+  color: #0d6efd;
+}
+
+/* links */
+.footer-links a {
+  color: #495057;
+  text-decoration: none;
+  margin: 0 8px;
+  transition:
+    color 150ms ease,
+    transform 120ms ease;
+}
+.footer-links a:hover {
+  color: #0d6efd;
+  transform: translateY(-2px);
+}
+
+/* social icons */
+.social-link {
+  color: #6c757d;
+  margin-left: 10px;
+  transition:
+    color 150ms ease,
+    transform 120ms ease;
+}
+.social-link:hover {
+  color: #0d6efd;
+  transform: translateY(-3px);
+}
+
+/* bottom row */
+.footer-bottom {
+  background: rgba(13, 110, 253, 0.02);
+  border-top: 1px solid rgba(13, 110, 253, 0.03);
+  font-size: 0.85rem;
+  color: #6c757d;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* responsive spacing */
+@media (min-width: 768px) {
+  .footer-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .app-footer::before {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

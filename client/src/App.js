@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import SingleUser from "./pages/SingleUser";
 import LoginForm from "./pages/LoginForm";
 import SignupForm from "./pages/SignupForm";
+import Footer from "./components/Footer";
 
 // const authLink = setContext((_, { headers }) => {
 //   // gets the authentication token from local storage if it exists
@@ -22,20 +23,27 @@ import SignupForm from "./pages/SignupForm";
 function App() {
   return (
     <Router>
-      <>
-        <Navbar />
-        <Routes>
-          <Route
-            path="*"
-            element={<h1 className="display-2">Wrong page!</h1>}
-          />
-          <Route path="/" element={<Home />} />
-          <Route path="/users/:UserId" element={<SingleUser />}></Route>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/login" element={<LoginForm />} />
-        </Routes>
-      </>
+      <div className="app d-flex flex-column min-vh-100">
+        <header>
+          <Navbar />
+        </header>
+
+        <main className="flex-grow-1">
+          <Routes>
+            <Route
+              path="*"
+              element={<h1 className="display-2">Wrong page!</h1>}
+            />
+            <Route path="/" element={<Home />} />
+            <Route path="/users/:UserId" element={<SingleUser />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/login" element={<LoginForm />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
     </Router>
   );
 }
