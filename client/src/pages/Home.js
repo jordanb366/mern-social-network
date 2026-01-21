@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./home.css";
 import { Link } from "react-router-dom";
 import { getAllUsers, getAllThoughts } from "../utils/API";
 
@@ -40,7 +41,7 @@ const Home = () => {
   return (
     <>
       <h3 className="text-center p-4">All Thoughts</h3>
-      <div className="container">
+      <div className="container home-grid">
         {thoughtData.length ? (
           thoughtData.map((t) => {
             const user = usersByName[t.username];

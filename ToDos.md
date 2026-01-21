@@ -56,8 +56,7 @@
 
 ### Features
 
-- [ ] \*\* Work on the users "profile" page - UI updates, show users thoughts in the dashboard as well
-- **Acceptance Criteria:** users "profile" page - UI updates, show users thoughts in the dashboard as well
+- [ ] \*\* May change the add and remove friend buttons and change them to follow and unfollow instead
 
 ### Repo / Process
 

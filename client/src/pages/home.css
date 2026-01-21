@@ -1,0 +1,94 @@
+:root {
+  --bg: #fbfdff;
+  --surface: #ffffff;
+  --text: #374151;
+  --muted: #6c757d;
+  --primary: #0d6efd;
+  --accent: #6f42c1;
+  --success: #20c997;
+  --radius: 10px;
+  --gap: 16px;
+  --container-max: 1100px;
+}
+
+/* page wrapper */
+.home-page {
+  background: var(--bg);
+  color: var(--text);
+  padding: 20px 12px;
+}
+
+/* responsive grid for the list of cards */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  align-items: start;
+  padding: 0 12px;
+}
+
+/* two-up on small tablets, three-ish on wide screens */
+@media (min-width: 640px) {
+  .home-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .home-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* card polish */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition:
+    transform 140ms ease,
+    box-shadow 180ms ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* title and metadata */
+.card .card-title a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.card .text-muted {
+  color: var(--muted);
+}
+
+/* buttons (lightweight overrides so primary matches footer) */
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+}
+
+/* small helpers */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+/* reduce card content overflow on small screens */
+.card-text {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
