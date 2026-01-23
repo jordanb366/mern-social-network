@@ -177,8 +177,7 @@ const SingleUser = () => {
               )}
             </>
           )}
-          <p>ID: {userData.user?.id}</p>
-          <p>Username: {userData.user?.username}</p>
+
           <p>Email: {userData.user?.email}</p>
           <p>
             Friends:{" "}
@@ -197,22 +196,27 @@ const SingleUser = () => {
                 <p>{thought.thoughtText}</p>
                 <p>Created at: {thought.createdAt}</p>
                 <p>{}</p>
-                <form className="form-inline">
-                  <textarea
-                    // name="Reaction"
-                    value={reactionText}
-                    onChange={(e) => setReactionText(e.target.value)}
-                    className="p-4 m-4"
-                  ></textarea>
-                  <button
-                    type="button"
-                    id={thought._id}
-                    onClick={() => createReaction(thought._id)}
-                    className="btn btn-success m-4"
-                  >
-                    Create A Reaction
-                  </button>
-                </form>
+                {Auth.loggedIn() ? (
+                  <form className="reaction-form">
+                    <textarea
+                      className="reaction-textarea p-2"
+                      value={reactionText}
+                      onChange={(e) => setReactionText(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      id={thought._id}
+                      onClick={() => createReaction(thought._id)}
+                      className="btn btn-success reaction-btn ms-2"
+                    >
+                      Create A Reaction
+                    </button>
+                  </form>
+                ) : (
+                  <p className="m-4">
+                    Please <Link to="/login">log in</Link> to add a reaction.
+                  </p>
+                )}
                 <>
                   <hr />
                 </>

@@ -92,3 +92,18 @@
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+.reaction-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.reaction-textarea {
+  flex: 1;
+  min-height: 80px;
+  resize: vertical;
+  margin: 0;
+}
+.reaction-btn {
+  align-self: flex-start;
+}
