@@ -137,7 +137,7 @@ const SingleUser = () => {
                   onClick={() =>
                     removeFriend(loggedInUser._id, userData.user?.id)
                   }
-                  aria-label="Remove friend"
+                  aria-label="Unfollow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +150,7 @@ const SingleUser = () => {
                   >
                     <path d="M13.485 1.929a.75.75 0 0 1 0 1.06L6.56 9.914a.75.75 0 0 1-1.06 0L2.515 7.93a.75.75 0 1 1 1.06-1.06L5.5 8.799 12.425 1.93a.75.75 0 0 1 1.06 0z" />
                   </svg>
-                  Remove Friend
+                  Unfollow
                 </button>
               ) : (
                 <button
@@ -159,7 +159,7 @@ const SingleUser = () => {
                   onClick={() =>
                     handleAddFriend(loggedInUser._id, userData.user?.id)
                   }
-                  aria-label="Add friend"
+                  aria-label="Follow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +172,7 @@ const SingleUser = () => {
                   >
                     <path d="M8 1a.5.5 0 0 1 .5.5V7.5H14a.5.5 0 0 1 0 1H8.5V14a.5.5 0 0 1-1 0V8.5H2a.5.5 0 0 1 0-1h5.5V1.5A.5.5 0 0 1 8 1z" />
                   </svg>
-                  Add Friend
+                  Follow
                 </button>
               )}
             </>
@@ -180,7 +180,7 @@ const SingleUser = () => {
 
           <p>Email: {userData.user?.email}</p>
           <p>
-            Friends:{" "}
+            Following:{" "}
             {userData.user?.friends?.map((friend, index) => (
               <span key={friend._id}>
                 <Link to={`/users/${friend._id}`}>{friend.username}</Link>
