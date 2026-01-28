@@ -27,7 +27,13 @@ const userSchema = new Schema(
         ref: "Thought",
       },
     ],
-    friends: [
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -39,7 +45,7 @@ const userSchema = new Schema(
       getters: true,
       virtuals: true,
     },
-  }
+  },
 );
 
 userSchema.pre("save", async function () {
@@ -53,8 +59,12 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.virtual("friendCount").get(function () {
-  return this.friends.length;
+userSchema.virtual("followerCount").get(function () {
+  return this.followers.length;
+});
+
+userSchema.virtual("followingCount").get(function () {
+  return this.following.length;
 });
 
 const User = model("User", userSchema);

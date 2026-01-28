@@ -23,13 +23,14 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
-      .populate("friends")
+      .populate("followers")
+      .populate("following")
       .then(async (user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
           : res.json({
               user,
-            })
+            }),
       )
       .catch((err) => {
         console.log(err);
@@ -90,12 +91,12 @@ module.exports = {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $set: req.body },
-      { runValidators: true, new: true }
+      { runValidators: true, new: true },
     )
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
-          : res.json(user)
+          : res.json(user),
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -106,42 +107,63 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : Thought.deleteMany({ _id: { $in: user.thoughts } })
+          : Thought.deleteMany({ _id: { $in: user.thoughts } }),
       )
       .then(() =>
-        res.json({ message: "User and associated thoughts deleted!" })
+        res.json({ message: "User and associated thoughts deleted!" }),
       )
       .catch((err) => res.status(500).json(err));
   },
 
-  // Add a friend by params userId
+  // Follow: userId follows friendId (keeps route names for compatibility)
   addFriend(req, res) {
-    console.log("You are adding a friend");
-    console.log(req.body);
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $addToSet: { friends: req.params.friendId } },
-      { runValidators: true, new: true }
-    )
-      .then((user) => {
-        console.log("FRIEND", user);
-        !user
-          ? res.status(404).json({ message: "No user found with that ID :(" })
-          : res.json(user);
+    const followerId = req.params.userId; // the user performing the follow
+    const followingId = req.params.friendId; // the user being followed
+    Promise.all([
+      // Add followingId to followerId's following array
+      User.findOneAndUpdate(
+        { _id: followerId },
+        { $addToSet: { following: followingId } },
+        { runValidators: true, new: true },
+      ),
+      // Add followerId to followingId's followers array
+      User.findOneAndUpdate(
+        { _id: followingId },
+        { $addToSet: { followers: followerId } },
+        { runValidators: true, new: true },
+      ),
+    ])
+      .then(([follower, following]) => {
+        if (!follower || !following) {
+          return res
+            .status(404)
+            .json({ message: "One or both users not found :(" });
+        }
+        res.json({ follower, following });
       })
       .catch((err) => res.status(500).json(err));
   },
-  // Remove a friend by params userId
+  // Unfollow: userId unfollows friendId
   removeFriend(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { friends: req.params.friendId } },
-      { runValidators: true, new: true }
-    )
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user found with that ID :(" })
-          : res.json(user)
+    const followerId = req.params.userId;
+    const followingId = req.params.friendId;
+
+    Promise.all([
+      User.findOneAndUpdate(
+        { _id: followerId },
+        { $pull: { following: followingId } },
+        { runValidators: true, new: true },
+      ),
+      User.findOneAndUpdate(
+        { _id: followingId },
+        { $pull: { followers: followerId } },
+        { runValidators: true, new: true },
+      ),
+    ])
+      .then(([follower, followed]) =>
+        !follower || !followed
+          ? res.status(404).json({ message: "User not found" })
+          : res.json({ follower, followed }),
       )
       .catch((err) => res.status(500).json(err));
   },

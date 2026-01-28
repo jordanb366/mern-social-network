@@ -1,125 +1,123 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-// import { getSingleUser } from "../utils/API";
 import Auth from "../utils/auth";
 import { getMe } from "../utils/API";
 
 const SingleUser = () => {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [reactionText, setReactionText] = useState("");
+  const [thoughtData, setThoughtData] = useState([]);
+  const [loggedInUser, setLoggedInData] = useState({});
+  const [isVisible, setIsVisible] = useState(false);
 
   const { UserId } = useParams();
 
-  useEffect(() => {
+  const fetchSingleUser = async () => {
     if (!UserId) return;
-    fetch(`/api/users/${UserId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data);
-      })
-      .catch((err) => console.error(err));
-  }, [UserId]);
-
-  // Get the thought data from data base to the front-end
-  const [thoughtData, setThoughtData] = useState([]);
-
-  // Get request for thoughts
-  const fetchThoughts = () => {
-    fetch(`/api/thoughts/`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setThoughtData(data);
-      });
+    try {
+      const res = await fetch(`/api/users/${UserId}`);
+      const data = await res.json();
+      setUserData(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  const fetchThoughts = async () => {
+    try {
+      const res = await fetch(`/api/thoughts/`);
+      const data = await res.json();
+      setThoughtData(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const refreshLoggedInUser = async () => {
+    try {
+      const token = Auth.loggedIn() ? Auth.getToken() : null;
+      if (!token) return;
+      const response = await getMe(token);
+      if (!response.ok) {
+        throw new Error("something went wrong!");
+      }
+      const user = await response.json();
+      setLoggedInData(user);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchSingleUser();
+  }, [UserId]);
 
   useEffect(() => {
     fetchThoughts();
   }, []);
 
-  // console.log(thoughtData);
+  useEffect(() => {
+    refreshLoggedInUser();
+  }, []);
 
-  // Filter to only show thoughts for single user
-  const thoughts = thoughtData.filter(function (postsBy) {
+  // follow (previously addFriend)
+  const handleAddFriend = async (loggedInUserId, friendId) => {
+    try {
+      await fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      await refreshLoggedInUser();
+      await fetchSingleUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // unfollow (previously removeFriend)
+  const removeFriend = async (loggedInUserId, friendId) => {
+    try {
+      await fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      await refreshLoggedInUser();
+      await fetchSingleUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const createReaction = async (thoughtId) => {
+    try {
+      await fetch(`/api/thoughts/${thoughtId}/reactions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reactionBody: reactionText,
+          username: loggedInUser.username,
+        }),
+      });
+      setReactionText("");
+      await fetchThoughts();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const thoughts = thoughtData.filter((postsBy) => {
     return postsBy.username === userData.user?.username;
   });
 
-  // console.log(thoughts);
-  // ---------------- Retrieving data for logged in user
-
-  // Find the id of the logged in user
-  const [loggedInUser, setLoggedInData] = useState([]);
-  const userDataLength = Object.keys(userData).length;
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-        if (!token) {
-          return false;
-        }
-
-        const response = await getMe(token);
-
-        if (!response.ok) {
-          throw new Error("something went wrong!");
-        }
-
-        const user = await response.json();
-        setLoggedInData(user);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    getUserData();
-  }, [userDataLength]);
-
-  // ---- Function to handle adding a friend
-  const handleAddFriend = (loggedInUserId, friendId) => {
-    fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
-  // --- Function to handle removing a friend
-  const removeFriend = (loggedInUserId, friendId) => {
-    fetch(`/api/users/${loggedInUserId}/friends/${friendId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
-  const createReaction = (thoughtId) => {
-    fetch(`/api/thoughts/${thoughtId}/reactions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        reactionBody: reactionText,
-        username: loggedInUser.username,
-      }),
-    });
-    setReactionText("");
-    fetchThoughts();
-    console.log(reactionText);
-    console.log(thoughtId);
-  };
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  const isFriend = !!loggedInUser?.friends?.some((friend) => {
-    const friendId = friend?._id ?? friend?.id ?? friend; // support object or id string
+  // check if logged-in user is following the viewed user
+  const isFriend = !!loggedInUser?.following?.some((friend) => {
+    const friendId = friend?._id ?? friend?.id ?? friend;
     const viewedId = userData?.user?._id ?? userData?.user?.id;
     return friendId && viewedId && friendId.toString() === viewedId.toString();
   });
+
+  const followingList = userData.user?.following || [];
+  const followersList = userData.user?.followers || [];
 
   return (
     <>
@@ -139,17 +137,7 @@ const SingleUser = () => {
                   }
                   aria-label="Unfollow"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    style={{ marginRight: 8, verticalAlign: "text-bottom" }}
-                    aria-hidden="true"
-                  >
-                    <path d="M13.485 1.929a.75.75 0 0 1 0 1.06L6.56 9.914a.75.75 0 0 1-1.06 0L2.515 7.93a.75.75 0 1 1 1.06-1.06L5.5 8.799 12.425 1.93a.75.75 0 0 1 1.06 0z" />
-                  </svg>
+                  {/* Unfollow SVG */}
                   Unfollow
                 </button>
               ) : (
@@ -161,17 +149,7 @@ const SingleUser = () => {
                   }
                   aria-label="Follow"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    style={{ marginRight: 8, verticalAlign: "text-bottom" }}
-                    aria-hidden="true"
-                  >
-                    <path d="M8 1a.5.5 0 0 1 .5.5V7.5H14a.5.5 0 0 1 0 1H8.5V14a.5.5 0 0 1-1 0V8.5H2a.5.5 0 0 1 0-1h5.5V1.5A.5.5 0 0 1 8 1z" />
-                  </svg>
+                  {/* Follow SVG */}
                   Follow
                 </button>
               )}
@@ -181,21 +159,34 @@ const SingleUser = () => {
           <p>Email: {userData.user?.email}</p>
           <p>
             Following:{" "}
-            {userData.user?.friends?.map((friend, index) => (
-              <span key={friend._id}>
-                <Link to={`/users/${friend._id}`}>{friend.username}</Link>
-                {index < userData.user.friends.length - 1 ? ", " : ""}
+            {followingList.map((friend, index) => (
+              <span key={friend._id ?? friend}>
+                <Link to={`/users/${friend._id ?? friend}`}>
+                  {friend.username ?? friend}
+                </Link>
+                {index < followingList.length - 1 ? ", " : ""}
               </span>
             ))}
           </p>
-          <p></p>
+          <p>
+            Followers:{" "}
+            {followersList.map((friend, index) => (
+              <span key={friend._id ?? friend}>
+                <Link to={`/users/${friend._id ?? friend}`}>
+                  {friend.username ?? friend}
+                </Link>
+                {index < followersList.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </p>
+
           {thoughts.map((thought) => (
             <div key={thought._id} className="mt-4 pt-4 card">
               <div className="card-body">
                 <h4>Thoughts</h4>
                 <p>{thought.thoughtText}</p>
                 <p>Created at: {thought.createdAt}</p>
-                <p>{}</p>
+
                 {Auth.loggedIn() ? (
                   <form className="reaction-form">
                     <textarea
@@ -217,9 +208,9 @@ const SingleUser = () => {
                     Please <Link to="/login">log in</Link> to add a reaction.
                   </p>
                 )}
-                <>
-                  <hr />
-                </>
+
+                <hr />
+
                 {thought.reactions && thought.reactions.length > 0 && (
                   <button
                     className="btn btn-info mb-3"
@@ -234,7 +225,6 @@ const SingleUser = () => {
                 )}
                 <hr />
 
-                {/* Reactions - Only visible if this thought's ID matches */}
                 {isVisible === thought._id && (
                   <div className="reactions">
                     {(thought.reactions || []).map((reaction) => (
