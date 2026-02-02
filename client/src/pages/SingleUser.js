@@ -5,7 +5,7 @@ import { getMe } from "../utils/API";
 
 const SingleUser = () => {
   const [userData, setUserData] = useState({});
-  const [reactionText, setReactionText] = useState("");
+  const [reactionText, setReactionText] = useState({});
   const [thoughtData, setThoughtData] = useState([]);
   const [loggedInUser, setLoggedInData] = useState({});
   const [isVisible, setIsVisible] = useState(false);
@@ -90,15 +90,16 @@ const SingleUser = () => {
 
   const createReaction = async (thoughtId) => {
     try {
+      const bodyText = reactionText[thoughtId] || "";
       await fetch(`/api/thoughts/${thoughtId}/reactions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reactionBody: reactionText,
+          reactionBody: bodyText,
           username: loggedInUser.username,
         }),
       });
-      setReactionText("");
+      setReactionText((prev) => ({ ...prev, [thoughtId]: "" }));
       await fetchThoughts();
     } catch (err) {
       console.error(err);
@@ -191,8 +192,13 @@ const SingleUser = () => {
                   <form className="reaction-form">
                     <textarea
                       className="reaction-textarea p-2"
-                      value={reactionText}
-                      onChange={(e) => setReactionText(e.target.value)}
+                      value={reactionText[thought._id] || ""}
+                      onChange={(e) =>
+                        setReactionText((prev) => ({
+                          ...prev,
+                          [thought._id]: e.target.value,
+                        }))
+                      }
                     />
                     <button
                       type="button"
