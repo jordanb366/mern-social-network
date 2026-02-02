@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import "./profile.css";
 import { getMe } from "../utils/API";
 import Auth from "../utils/auth";
 
@@ -57,19 +57,29 @@ const Profile = () => {
 
   // ---- Create a thought POST request to send to database
 
-  const createThought = () => {
-    fetch(`/api/thoughts/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        thoughtText: thoughtText,
-        username: userData.username,
-        userId: userData._id,
-      }),
-    });
-    console.log(thoughtText);
+  const createThought = async (e) => {
+    e.preventDefault();
+    const trimmed = thoughtText.trim();
+    if (!trimmed) return;
+
+    try {
+      const res = await fetch(`/api/thoughts/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          thoughtText: trimmed,
+          username: userData.username,
+          userId: userData._id,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to create thought");
+
+      setThoughtText("");
+      fetchThoughts();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -77,24 +87,34 @@ const Profile = () => {
       <h1 className="text-center p-4">
         Welcome to your profile, {userData.username}!
       </h1>
-      <div className="container">
-        <h1>{userData.username}</h1>
-      </div>
+
       <div>
-        <p className="p-4">Create a new thought:</p>
-        <form className="form-inline">
-          <textarea
-            value={thoughtText}
-            onChange={(e) => setThoughtText(e.target.value)}
-            className="p-4 m-4"
-          ></textarea>
-          <button
-            type="button"
-            onClick={(e) => createThought(e)}
-            className="btn btn-success m-4"
-          >
-            Create Thought
-          </button>
+        <form className="new-thought-form" onSubmit={createThought}>
+          <div className="card new-thought-card p-3">
+            <label htmlFor="thoughtText" className="form-label">
+              Share something
+            </label>
+            <textarea
+              id="thoughtText"
+              className="form-control new-thought-textarea"
+              rows="4"
+              placeholder="What's on your mind?"
+              value={thoughtText}
+              onChange={(e) => setThoughtText(e.target.value)}
+              maxLength={280}
+              aria-label="Create a thought"
+            />
+            <div className="d-flex justify-content-between align-items-center mt-2">
+              <small className="text-muted">{thoughtText.length}/280</small>
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={!thoughtText.trim()}
+              >
+                Create Thought
+              </button>
+            </div>
+          </div>
         </form>
       </div>
       <div className="mt-4">

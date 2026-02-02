@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./singleUser.css";
 import { Link, useParams } from "react-router-dom";
 import Auth from "../utils/auth";
 import { getMe } from "../utils/API";
@@ -191,7 +192,9 @@ const SingleUser = () => {
                 {Auth.loggedIn() ? (
                   <form className="reaction-form">
                     <textarea
-                      className="reaction-textarea p-2"
+                      className="form-control form-control-sm reaction-textarea"
+                      rows={2}
+                      placeholder="Add a quick reaction"
                       value={reactionText[thought._id] || ""}
                       onChange={(e) =>
                         setReactionText((prev) => ({
@@ -199,14 +202,15 @@ const SingleUser = () => {
                           [thought._id]: e.target.value,
                         }))
                       }
+                      aria-label="Reaction"
                     />
                     <button
                       type="button"
                       id={thought._id}
                       onClick={() => createReaction(thought._id)}
-                      className="btn btn-success reaction-btn ms-2"
+                      className="btn btn-success btn-sm reaction-btn ms-2"
                     >
-                      Create A Reaction
+                      React!
                     </button>
                   </form>
                 ) : (

@@ -1,0 +1,22 @@
+.reaction-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.reaction-textarea {
+  flex: 1;
+  min-height: 38px;
+  max-height: 80px;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.reaction-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1;
+}
