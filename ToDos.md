@@ -1,67 +1,30 @@
-[## To Dos
+# ToDos
 
-**Notes**
+A compact, prioritized list of suggested improvements for the project. Pick one to implement next.
 
-- Needed to add `--openssl-legacy-provider` to React start/build scripts; app runs now. Research which npm packages require updates for the current React.
-- Add comments to client side soon.
+## Top Suggestions
 
----
+- **Auth redirect:** Redirect unauthenticated users away from the profile page to the login page so only logged-in users can access it. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js)
+- **Delete thought:** Add a Delete button for each thought and call `DELETE /api/thoughts/:id`; refresh the list after success. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js), server routes
+- **Move fetches to API util:** Move direct `fetch()` calls into [client/src/utils/API.js](client/src/utils/API.js) (createThought, getThoughts, deleteThought, updateThought) for reuse and testability. Edit: [client/src/utils/API.js](client/src/utils/API.js), [client/src/pages/Profile.js](client/src/pages/Profile.js)
+- **Edit thought:** Allow inline editing of thoughts and call `PUT /api/thoughts/:id`; update UI optimistically. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js), server routes
+- **Friendly timestamps:** Format `createdAt` using `Intl.DateTimeFormat` or `date-fns` for human-friendly dates. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js)
 
-### Client
+## Medium Priority
 
-- [ ] **Display Reactions under thoughts**
-  - **Priority:** High · **Owner:** Unassigned · **Estimate:** 2–4h · **Status:** Todo
-  - **Acceptance Criteria:** Reactions render under each thought with counts; adding/removing a reaction updates the UI without a full page reload.
-  - **Subtasks:**
-    - [ ] Backend: ensure [server/controllers/thoughtController.js](server/controllers/thoughtController.js) returns reactions with thoughts.
-    - [ ] API: verify/update [server/routes/api/thoughtRoutes.js](server/routes/api/thoughtRoutes.js).
-    - [ ] Client: update components in `client/src/pages` and `client/src/components` to render reaction items and counts.
-    - [ ] QA: manual tests for add/remove reaction flows.
+- **Loading & error states:** Add `isLoading` and `error` states; show skeletons or alerts while fetching. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js)
+- **Optimistic create:** Add newly created thoughts to local state immediately and rollback on failure for snappier UX. Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js)
+- **Client validation & toasts:** Validate `thoughtText` length and show success/error toasts (e.g., `react-toastify`). Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js)
 
-- [ ] **Add comments to client codebase**
-  - **Priority:** Medium · **Owner:** Unassigned · **Estimate:** 1–2h · **Status:** Todo
-  - **Acceptance Criteria:** Key components and pages have brief header comments (purpose, props, side effects).
-  - **Subtasks:**
-    - [ ] Add JSDoc-style comments to `client/src/components` and `client/src/pages`.
-    - [ ] Optional: add `CLIENT_DOCS.md` with component overview.
+## Lower Priority / Later
 
-- [ ] **Finish styling: Thoughts & Reactions layout**
-  - **Priority:** Medium · **Owner:** Unassigned · **Estimate:** 4–8h · **Status:** Todo
-  - **Acceptance Criteria:** Thoughts cards are visually distinct; reactions display as badges or a compact list; layout is responsive.
-  - **Subtasks:**
-    - [ ] Create/adjust CSS classes (card, badge, grid).
-    - [ ] Update components to use classes and verify mobile layout.
-    - [ ] Capture before/after screenshots for review.
+- **Profile details & avatar:** Surface more user details (bio, joined date) and enable avatar upload (store URL on the User model). Edit: [client/src/pages/Profile.js](client/src/pages/Profile.js), server models/routes
+- **Reactions / likes:** Add reaction/like button using the `Reaction` model and show counts without full refresh. Edit: client & server
+- **Real-time updates:** Integrate Socket.IO to broadcast new thoughts/reactions so other users see changes live. Edit: client & server
+- **Tests:** Add React Testing Library tests for `Profile.js` covering render, fetch, create, and delete flows. Add: `client/src/pages/__tests__/Profile.test.js`
 
----
+## Recommended next steps
 
-### Server
-
-- [ ] **Review and fix thought controllers / query patterns**
-  - **Priority:** High · **Owner:** Unassigned · **Estimate:** 3–5h · **Status:** Todo
-  - **Acceptance Criteria:** Controller queries fetch thoughts and associated reactions efficiently by thought id; endpoints return required fields only.
-  - **Subtasks:**
-    - [ ] Audit `server/controllers/thoughtController.js` for query efficiency and proper population of `reactions`.
-    - [ ] Add/update tests for thought endpoints.
-    - [ ] Document API changes in `server/README.md` or `API.md`.
-
-- [ ] **Clean up unused code**
-  - **Priority:** Low · **Owner:** Unassigned · **Estimate:** 1–3h · **Status:** Todo
-  - **Acceptance Criteria:** Remove dead exports/imports and console logs; app builds without warnings from cleaned modules.
-  - **Subtasks:**
-    - [ ] Run linter/import-checker, remove unused code.
-    - [ ] Commit cleanup in a dedicated PR.
-
----
-
-### Features
-
-- [ ] \*\* May change the add and remove friend buttons and change them to follow and unfollow instead
-
-### Repo / Process
-
-- [ ] **Add issue & PR templates**
-  - **Priority:** Low · **Owner:** Unassigned · **Estimate:** 0.5–1h · **Status:** Todo
-
-- [ ] **Create milestone: v0.1 (UI polish)**
-  - **Priority:** Low · **Owner:** Unassigned · **Estimate:** 0.5–1h · **Status:** Todo]
+1. Implement **Auth redirect** or **Delete thought** first (small, high impact).
+2. Move shared fetch logic into `client/src/utils/API.js` to simplify future changes.
+3. Add loading/error states and friendly timestamps for polish.
