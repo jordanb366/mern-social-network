@@ -35,9 +35,9 @@ const Profile = () => {
     getUserData();
   }, [userDataLength]);
 
-  console.log(userData);
-
   const [thoughts, setThoughts] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editedText, setEditedText] = useState("");
 
   // helper to fetch and filter thoughts for current user
   const fetchThoughts = () => {
@@ -79,6 +79,55 @@ const Profile = () => {
       fetchThoughts();
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // ---- Delete a thought
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this thought? This cannot be undone.")) return;
+    try {
+      const res = await fetch(`/api/thoughts/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete thought");
+      fetchThoughts();
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete thought");
+    }
+  };
+
+  // ---- Start editing a thought
+  const handleEditClick = (t) => {
+    setEditingId(t._id);
+    setEditedText(t.thoughtText);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditedText("");
+  };
+
+  // ---- Save edited thought
+  const handleSaveEdit = async (id) => {
+    const trimmed = editedText.trim();
+    if (!trimmed) {
+      alert("Thought cannot be empty");
+      return;
+    }
+    try {
+      const res = await fetch(`/api/thoughts/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ thoughtText: trimmed }),
+      });
+      if (!res.ok) throw new Error("Failed to update thought");
+      setEditingId(null);
+      setEditedText("");
+      fetchThoughts();
+    } catch (err) {
+      console.error(err);
+      alert("Could not update thought");
     }
   };
 
@@ -125,8 +174,52 @@ const Profile = () => {
           thoughts.map((t) => (
             <div key={t._id} className="card mb-2">
               <div className="card-body">
-                <p>{t.thoughtText}</p>
-                <small>Created: {t.createdAt}</small>
+                {editingId === t._id ? (
+                  <>
+                    <textarea
+                      className="form-control mb-2"
+                      rows="3"
+                      value={editedText}
+                      onChange={(e) => setEditedText(e.target.value)}
+                      maxLength={280}
+                    />
+                    <div className="d-flex gap-2">
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handleSaveEdit(t._id)}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={handleCancelEdit}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>{t.thoughtText}</p>
+                    <small className="d-block mb-2">
+                      Created: {t.createdAt}
+                    </small>
+                    <div className="d-flex gap-2">
+                      <button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => handleEditClick(t)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => handleDelete(t._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           ))
