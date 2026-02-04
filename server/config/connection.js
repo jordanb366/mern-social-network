@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { connect, connection } = require("mongoose");
 // Mongoose connection MongoDB database
 const connectionString =
