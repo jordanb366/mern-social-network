@@ -1,14 +1,17 @@
 const router = require("express").Router();
 const path = require("path");
+const fs = require("fs");
 const apiRoutes = require("./api");
 
 router.use("/api", apiRoutes);
 
-// router.use((req, res) => res.send('Wrong route!'));
+const buildPath = path.join(__dirname, "../../client/build");
 
-// serve up react front-end in production
-router.use((req, res) => {
-  res.sendFile(path.join(__dirname, "../../client/build/index.html"));
-});
-
+if (fs.existsSync(buildPath)) {
+  router.use((req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+} else {
+  router.use((req, res) => res.status(404).send("Not Found"));
+}
 module.exports = router;
