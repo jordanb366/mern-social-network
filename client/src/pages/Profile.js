@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./profile.css";
 import { getMe } from "../utils/API";
 import Auth from "../utils/auth";
@@ -40,7 +40,7 @@ const Profile = () => {
   const [editedText, setEditedText] = useState("");
 
   // helper to fetch and filter thoughts for current user
-  const fetchThoughts = () => {
+  const fetchThoughts = useCallback(() => {
     if (!userData.username) return;
     fetch("/api/thoughts")
       .then((res) => res.json())
@@ -48,12 +48,12 @@ const Profile = () => {
         setThoughts(data.filter((t) => t.username === userData.username));
       })
       .catch((err) => console.error(err));
-  };
+  }, [userData.username]);
 
   // fetch when we have the username
   useEffect(() => {
     fetchThoughts();
-  }, [userData.username]);
+  }, [fetchThoughts]);
 
   // ---- Create a thought POST request to send to database
 

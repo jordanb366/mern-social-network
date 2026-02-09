@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ debug: false });
 const path = require("path");
 const fs = require("fs");
 const express = require("express");

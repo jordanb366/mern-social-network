@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./singleUser.css";
 import { Link, useParams } from "react-router-dom";
 import Auth from "../utils/auth";
@@ -13,7 +13,7 @@ const SingleUser = () => {
 
   const { UserId } = useParams();
 
-  const fetchSingleUser = async () => {
+  const fetchSingleUser = useCallback(async () => {
     if (!UserId) return;
     try {
       const res = await fetch(`/api/users/${UserId}`);
@@ -22,7 +22,7 @@ const SingleUser = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [UserId]);
 
   const fetchThoughts = async () => {
     try {
@@ -51,7 +51,7 @@ const SingleUser = () => {
 
   useEffect(() => {
     fetchSingleUser();
-  }, [UserId]);
+  }, [fetchSingleUser]);
 
   useEffect(() => {
     fetchThoughts();
