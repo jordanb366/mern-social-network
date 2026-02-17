@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./profile.css";
-import { getMe } from "../utils/API";
+import { getMe, deleteUser } from "../utils/API";
 import Auth from "../utils/auth";
 
 const Profile = () => {
@@ -131,11 +131,39 @@ const Profile = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Delete your account? This cannot be undone.")) return;
+    try {
+      const token = Auth.loggedIn() ? Auth.getToken() : null;
+      if (!token) {
+        alert("You must be logged in to delete your account.");
+        return;
+      }
+      const res = await deleteUser(userData._id, token);
+      if (!res.ok) throw new Error("Failed to delete account");
+      // remove local token and redirect to home/login
+      alert("Your account has been deleted.");
+      Auth.logout();
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete account");
+    }
+  };
+
   return (
     <>
-      <h1 className="text-center p-4">
-        Welcome to your profile, {userData.username}!
-      </h1>
+      <div className="d-flex justify-content-between align-items-center px-3">
+        <h1 className="text-center p-4" style={{ margin: 0 }}>
+          Welcome to your profile, {userData.username}!
+        </h1>
+        <button
+          className="btn btn-danger"
+          onClick={handleDeleteAccount}
+          hidden={!userData._id}
+        >
+          Delete Account
+        </button>
+      </div>
 
       <div>
         <form className="new-thought-form" onSubmit={createThought}>

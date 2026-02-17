@@ -65,3 +65,13 @@ export const getAllThoughts = () => {
     headers: { "Content-Type": "application/json" },
   });
 };
+
+export const deleteUser = (userId, token) => {
+  return fetch(`/api/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
