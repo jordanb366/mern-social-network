@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // serve static build (if present) BEFORE the routes so /static/* is handled by express.static
-const buildPath = path.join(__dirname, "../client/build");
+const buildPath = path.join(process.cwd(), "client", "build");
 if (fs.existsSync(buildPath)) {
   app.use(express.static(buildPath));
 }
@@ -27,13 +27,13 @@ app.use(routes);
 
 // fallback to client index.html for single-page app routing (only if build exists)
 if (fs.existsSync(buildPath)) {
-  app.get(/^\/.*$/, (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
 }
 
 db.once("open", () => {
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`API server for ${activity} running on port ${PORT}!`);
   });
 });
