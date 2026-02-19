@@ -27,7 +27,7 @@ app.use(routes);
 
 // fallback to client index.html for single-page app routing (only if build exists)
 if (fs.existsSync(buildPath)) {
-  app.get("*", (req, res, next) => {
+  app.get("/*", (req, res, next) => {
     if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(buildPath, "index.html"));
   });
