@@ -1,18 +1,22 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# 1. Copy ALL files first so your scripts can find the 'server' and 'client' folders
+# Copy all project files
 COPY . .
 
-# 2. Run npm install (the script will now successfully cd into both directories)
-RUN npm install --no-audit --no-fund
+# 1. Force npm to use less memory globally inside the container
+ENV NODE_OPTIONS="--max-old-space-size=1024"
 
-# 3. Build the frontend (if you are compiling React on this server)
-# Uncomment the line below if your project requires a build step for the frontend:
-# RUN cd client && npm run build
+# 2. Split the installations up so they don't run in a single heavy command string
+# We also use specific npm flags to minimize memory footprint
+RUN cd server && npm install --no-audit --no-fund --prefer-offline --loglevel error
 
-# 4. Expose your backend API port
+RUN cd client && npm install --no-audit --no-fund --prefer-offline --loglevel error
+
+# 3. Disable React source maps so building the frontend doesn't crash the server later
+ENV GENERATE_SOURCEMAP=false
+RUN cd client && npm run build
+
 EXPOSE 5000
-
-# 5. Start the application
 CMD ["npm", "start"]
+
