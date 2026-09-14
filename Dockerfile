@@ -17,6 +17,6 @@ RUN cd client && npm install --no-audit --no-fund --prefer-offline --loglevel er
 ENV GENERATE_SOURCEMAP=false
 RUN cd client && npm run build
 
-EXPOSE 5000
+EXPOSE 3001
 CMD ["npm", "start"]
 
