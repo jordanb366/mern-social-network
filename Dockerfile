@@ -49,4 +49,4 @@ ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 EXPOSE 3001
 
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
