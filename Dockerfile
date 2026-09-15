@@ -28,8 +28,10 @@ RUN npm install --no-audit --no-fund --prefer-offline --loglevel error
 # Copy server source
 COPY server/ .
 
-# Copy client build output into server
-COPY --from=client-build /client/build ./build
+# Copy CRA build output into the expected server path
+
+COPY --from=client-build /client/build ./client/build
+
 
 
 
