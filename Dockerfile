@@ -29,7 +29,8 @@ RUN npm install --no-audit --no-fund --prefer-offline --loglevel error
 COPY server/ .
 
 # Copy client build output into server
-COPY --from=client-build /client/dist ./dist
+COPY --from=client-build /client/build ./build
+
 
 
 # ---------- Stage 3: Production Image ----------
