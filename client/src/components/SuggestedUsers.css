@@ -1,0 +1,109 @@
+.suggested-sidebar {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.sidebar-header h4 {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.suggested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.suggested-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.suggested-card:hover {
+  background: #f3f4f6;
+  transform: translateX(4px);
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.username-link {
+  display: block;
+  color: #0d6efd;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.username-link:hover {
+  text-decoration: underline;
+}
+
+.follower-count {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.follow-btn {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.follow-btn:hover {
+  background: #0b5ed7;
+  transform: scale(1.05);
+}
+
+.follow-btn:active {
+  transform: scale(0.98);
+}
+
+.no-users {
+  color: #6c757d;
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 10px;
+}
+
+/* Hide on smaller screens */
+@media (max-width: 1100px) {
+  .suggested-sidebar {
+    display: none;
+  }
+}
+
+/* Responsive for small tablets */
+@media (max-width: 1200px) {
+  .suggested-sidebar {
+    padding: 15px;
+  }
+
+  .sidebar-header h4 {
+    font-size: 1rem;
+  }
+}
