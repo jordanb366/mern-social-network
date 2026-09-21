@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./home.css";
+import Hero from "../components/Hero";
 import { Link } from "react-router-dom";
 import { getAllUsers, getAllThoughts } from "../utils/API";
 
@@ -40,6 +41,7 @@ const Home = () => {
 
   return (
     <>
+      <Hero />
       <h3 className="text-center p-4">All Thoughts</h3>
       <div className="container home-grid">
         {thoughtData.length ? (
